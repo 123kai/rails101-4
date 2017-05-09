@@ -23,6 +23,7 @@ class GroupsController < ApplicationController
     @group.user = current_user
 
     if @group.save
+      current_user.join!(@group)  
       redirect_to groups_path
     else
       render :new
@@ -59,7 +60,7 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
 
     if current_user.is_member_of?(@group)
-      current_user.quit!(@group)  
+      current_user.quit!(@group)
       flash[:alert] = "You just quit this group!"
     else
       flash[:warning] = "You are not a group member and cannot quit!"
